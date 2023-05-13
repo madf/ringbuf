@@ -1,0 +1,28 @@
+name: Build and test
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        build_type:
+          - "-O0 -ggdb3"
+          - "-O2"
+        compiler:
+          - { CC: gcc, CXX: g++ }
+          - { CC: clang, CXX: clang++ }
+
+    steps:
+
+    - name: Build
+      working-directory: ${{runner.workspace}}
+      shell: bash
+      run: CFLAGS=${{ matrix.build_type }} CXXFLAGS=${{ matrix.build_type }} make
+
+    - name: Test
+      working-directory: ${{runner.workspace}}
+      shell: bash
+      run: ./test
