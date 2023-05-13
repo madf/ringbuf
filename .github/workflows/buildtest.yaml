@@ -22,8 +22,9 @@ jobs:
       run: sudo apt install libboost-all-dev
     - name: Build
       env:
-        CFLAGS: ${{ matrix.flags }}
-        CXXFLAGS: ${{ matrix.flags }}
+        CFLAGS: ${{ matrix.flags }} -fsanitize=address
+        CXXFLAGS: ${{ matrix.flags }} -fsanitize=address
+        LDFLAGS: -fsanitize=address
       run: make
 
     - name: Test
