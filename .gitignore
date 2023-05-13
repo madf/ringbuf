@@ -1,3 +1,5 @@
 *.d
 *.o
+*.gcda
+*.gcno
 test
