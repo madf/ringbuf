@@ -20,7 +20,10 @@ jobs:
     - name: Build
       working-directory: ${{runner.workspace}}
       shell: bash
-      run: CFLAGS=${{ matrix.build_type }} CXXFLAGS=${{ matrix.build_type }} make
+      env:
+        CFLAGS: ${{ matrix.build_type }}
+        CXXFLAGS: ${{ matrix.build_type }}
+      run: make
 
     - name: Test
       working-directory: ${{runner.workspace}}
