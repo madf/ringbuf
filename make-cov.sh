@@ -1,3 +1,3 @@
 #!/bin/sh
 
-CFLAGS="-fprofile-arcs -ftest-coverage -fPIC -O0" CXXFLAGS="-fprofile-arcs -ftest-coverage -fPIC -O0" LDFLAGS="-fprofile-arcs -ftest-coverage -fPIC -O0" make ${1}
+CFLAGS="-fprofile-arcs -ftest-coverage -fPIC -O0 -ggdb3" CXXFLAGS="-fprofile-arcs -ftest-coverage -fPIC -O0 -ggdb3" LDFLAGS="-fprofile-arcs -ftest-coverage -fPIC -O0" make ${1}

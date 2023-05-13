@@ -1,6 +1,6 @@
 DEFS = -DBOOST_TEST_DYN_LINK -DBOOST_UNIT_TEST_FRAMEWORK_DYN_LINK -DBOOST_UNIT_TEST_FRAMEWORK_NO_LIB
-CFLAGS += $(DEFS) -ggdb3 -W -Wall -Wextra
-CXXFLAGS += $(DEFS) -ggdb3 -W -Wall -Wextra -std=c++17
+CFLAGS += $(DEFS) -W -Wall -Wextra
+CXXFLAGS += $(DEFS) -W -Wall -Wextra -std=c++17
 LDFLAGS += -lboost_unit_test_framework
 
 SOURCES = test.cpp \
