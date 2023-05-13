@@ -83,4 +83,47 @@ BOOST_AUTO_TEST_CASE(Wrap)
     BOOST_CHECK(rb.empty()); // ****
 }
 
+BOOST_AUTO_TEST_CASE(EdgeWrite)
+{
+    RB rb(4);
+    BOOST_CHECK(rb.empty());
+    BOOST_CHECK_EQUAL(rb.write("abcd"), 4);
+    BOOST_CHECK(!rb.empty());
+    BOOST_CHECK_EQUAL(rb.read(4), "abcd");
+    BOOST_CHECK(rb.empty());
+    BOOST_CHECK_EQUAL(rb.write("abcd"), 4);
+    BOOST_CHECK(!rb.empty());
+    BOOST_CHECK_EQUAL(rb.read(4), "abcd");
+    BOOST_CHECK(rb.empty());
+    BOOST_CHECK_EQUAL(rb.write("ab"), 2);
+    BOOST_CHECK(!rb.empty());
+    BOOST_CHECK_EQUAL(rb.read(4), "ab");
+    BOOST_CHECK(rb.empty());
+    BOOST_CHECK_EQUAL(rb.write("abcd"), 4);
+    BOOST_CHECK(!rb.empty());
+    BOOST_CHECK_EQUAL(rb.read(4), "abcd");
+    BOOST_CHECK(rb.empty());
+    BOOST_CHECK_EQUAL(rb.write("abcd"), 4);
+    BOOST_CHECK(!rb.empty());
+    BOOST_CHECK_EQUAL(rb.read(4), "abcd");
+}
+
+BOOST_AUTO_TEST_CASE(WriteLimit)
+{
+    RB rb(4);
+    BOOST_CHECK(rb.empty());
+    BOOST_CHECK_EQUAL(rb.write("abcd12"), 4);
+    BOOST_CHECK(!rb.empty());
+    BOOST_CHECK_EQUAL(rb.read(6), "abcd");
+    BOOST_CHECK(rb.empty());
+    BOOST_CHECK_EQUAL(rb.write("ab"), 2);
+    BOOST_CHECK(!rb.empty());
+    BOOST_CHECK_EQUAL(rb.read(4), "ab");
+    BOOST_CHECK(rb.empty());
+    BOOST_CHECK_EQUAL(rb.write("abcd12"), 4);
+    BOOST_CHECK(!rb.empty());
+    BOOST_CHECK_EQUAL(rb.read(6), "abcd");
+    BOOST_CHECK(rb.empty());
+}
+
 BOOST_AUTO_TEST_SUITE_END()
