@@ -215,12 +215,14 @@ size_t RingBuf_advance_wptr(RingBuf* rb, size_t offset)
     if (offset <= mws)
     {
         rb->wPtr = ptrAdd(rb->wPtr, offset);
+        rb->rSize += offset;
         return offset;
     }
     if (ptrLess(rb->rPtr, rb->wPtr))
         rb->wPtr = rb->data;
     else
         rb->wPtr = rb->rPtr;
+    rb->rSize += mws;
     return mws;
 }
 
@@ -244,12 +246,14 @@ size_t RingBuf_advance_rptr(RingBuf* rb, size_t offset)
     if (offset <= mrs)
     {
         rb->rPtr = ptrAdd(rb->rPtr, offset);
+        rb->rSize -= offset;
         return offset;
     }
     if (ptrLess(rb->wPtr, rb->rPtr))
         rb->rPtr = rb->data;
     else
         rb->rPtr = rb->wPtr;
+    rb->rSize -= mrs;
     return mrs;
 }
 
