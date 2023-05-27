@@ -69,6 +69,11 @@ void RingBuf_free(RingBuf* rb)
     free(rb);
 }
 
+size_t RingBuf_size(const RingBuf* rb)
+{
+    return rb->size;
+}
+
 size_t RingBuf_read(RingBuf* rb, void* buf, size_t size)
 {
     size_t toRead = rb->rSize;
@@ -178,6 +183,74 @@ size_t RingBuf_write(RingBuf* rb, const void* buf, size_t size)
 int RingBuf_is_empty(const RingBuf* rb)
 {
     return rb->rPtr == rb->wPtr && rb->rSize == 0 ? 1 : 0;
+}
+
+size_t RingBuf_bytes_to_read(const RingBuf* rb)
+{
+    return rb->rSize;
+}
+
+size_t RingBuf_bytes_to_write(const RingBuf* rb)
+{
+    return rb->size - rb->rSize;
+}
+
+void* RingBuf_wptr(RingBuf* rb)
+{
+    return rb->wPtr;
+}
+
+size_t RingBuf_max_write_size(const RingBuf* rb)
+{
+    if (!ptrLE(rb->rPtr, rb->wPtr))
+        return ptrDiff(rb->rPtr, rb->wPtr);
+    if (rb->rPtr == rb->wPtr && rb->rSize != 0)
+        return 0;
+    return rb->size - ptrDiff(rb->wPtr, rb->data);
+}
+
+size_t RingBuf_advance_wptr(RingBuf* rb, size_t offset)
+{
+    const size_t mws = RingBuf_max_write_size(rb);
+    if (offset <= mws)
+    {
+        rb->wPtr = ptrAdd(rb->wPtr, offset);
+        return offset;
+    }
+    if (ptrLess(rb->rPtr, rb->wPtr))
+        rb->wPtr = rb->data;
+    else
+        rb->wPtr = rb->rPtr;
+    return mws;
+}
+
+const void* RingBuf_rptr(const RingBuf* rb)
+{
+    return rb->rPtr;
+}
+
+size_t RingBuf_max_read_size(const RingBuf* rb)
+{
+    if (ptrLess(rb->rPtr, rb->wPtr))
+        return ptrDiff(rb->wPtr, rb->rPtr);
+    if (rb->rPtr == rb->wPtr && rb->rSize == 0)
+        return 0;
+    return rb->size - ptrDiff(rb->rPtr, rb->data);
+}
+
+size_t RingBuf_advance_rptr(RingBuf* rb, size_t offset)
+{
+    const size_t mrs = RingBuf_max_read_size(rb);
+    if (offset <= mrs)
+    {
+        rb->rPtr = ptrAdd(rb->rPtr, offset);
+        return offset;
+    }
+    if (ptrLess(rb->wPtr, rb->rPtr))
+        rb->rPtr = rb->data;
+    else
+        rb->rPtr = rb->wPtr;
+    return mrs;
 }
 
 #ifdef  __cplusplus
