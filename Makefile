@@ -14,7 +14,7 @@ test: test.o ringbuf.o
 	$(CXX) $^ $(LDFLAGS) -o $@
 
 clean:
-	rm *.o *.d test
+	rm *.o *.d test *.gcda *.gcno
 
 ifneq ($(MAKECMDGOALS),distclean)
 ifneq ($(MAKECMDGOALS),clean)
